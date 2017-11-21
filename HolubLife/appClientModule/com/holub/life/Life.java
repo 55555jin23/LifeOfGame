@@ -18,6 +18,9 @@ public final class Life extends JFrame
 	{	new Life();
 	}
 //seongho test1
+	
+//hyejin..
+	//sorry I have a headache no 
 	private Life()
 	{	super( "The Game of Life. "
 					+"(c)2003 Allen I. Holub <http://www.holub.com>");
