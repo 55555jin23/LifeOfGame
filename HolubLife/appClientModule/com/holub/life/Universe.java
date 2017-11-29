@@ -153,7 +153,35 @@ public class Universe extends JPanel
 				}
 			}
 		);
+		
+		ActionListener modifier =									//{=startSetup}
+				new ActionListener()
+				{	public void actionPerformed(ActionEvent e)
+					{
+						String name = ((JMenuItem)e.getSource()).getName();
+						char toDo = name.charAt(0);
+
+						if( toDo=='T' )
+							Clock.instance().tick();				      // single tick
+						else
+							Clock.instance().startTicking(   toDo=='A' ? 500:	  // agonizing
+											toDo=='S' ? 150:	  // slow
+											toDo=='M' ? 70 :	  // medium
+											toDo=='F' ? 30 : 0 ); // fast
+					}
+				};
+																		// {=midSetup}
+			MenuSite.addLine(this,"Go","Halt",  			modifier);
+			MenuSite.addLine(this,"Go","Tick (Single Step)",modifier);
+			MenuSite.addLine(this,"Go","Agonizing",	 	  	modifier);
+			MenuSite.addLine(this,"Go","Slow",		 		modifier);
+			MenuSite.addLine(this,"Go","Medium",	 	 	modifier);
+			MenuSite.addLine(this,"Go","Fast",				modifier);
+		
+		
 	}
+	
+	
 
 	/** Singleton Accessor. The Universe object itself is manufactured
 	 *  in Neighborhood.createUniverse()

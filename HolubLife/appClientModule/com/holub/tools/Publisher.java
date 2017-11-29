@@ -121,7 +121,7 @@ public class Publisher
 	synchronized public void subscribe( Object subscriber )
 	{	subscribers = new Node( subscriber, subscribers );
 	}
-
+	
 	synchronized public void cancelSubscription( Object subscriber )
 	{	subscribers = subscribers.remove( subscriber );
 	}
