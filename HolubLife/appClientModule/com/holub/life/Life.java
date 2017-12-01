@@ -17,10 +17,8 @@ public final class Life extends JFrame
 	public static void main( String[] arguments )
 	{	new Life();
 	}
-//seongho test1
-	
-//hyejin..
-	//sorry I have a headache no 
+
+	//sorry I have a headache no ..
 	private Life()
 	{	super( "The Game of Life. "
 					+"(c)2003 Allen I. Holub <http://www.holub.com>");
@@ -28,7 +26,6 @@ public final class Life extends JFrame
 		// Must establish the MenuSite very early in case
 		// a subcomponent puts menus on it.
 		MenuSite.establish( this );		//{=life.java.establish}
-
 		setDefaultCloseOperation	( EXIT_ON_CLOSE 		);
 		getContentPane().setLayout	( new BorderLayout()	);
 		getContentPane().add( Universe.instance(), BorderLayout.CENTER); //{=life.java.install}
