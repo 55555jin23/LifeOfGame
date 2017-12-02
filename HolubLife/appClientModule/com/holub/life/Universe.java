@@ -11,6 +11,8 @@ import com.holub.ui.MenuSite;
 
 import com.holub.life.Cell;
 import com.holub.life.Storable;
+import com.holub.life.Clock.Listener;
+import com.holub.tools.Publisher;
 import com.holub.life.Clock;
 import com.holub.life.Neighborhood;
 import com.holub.life.Resident;
@@ -29,7 +31,6 @@ import com.holub.life.Resident;
 public class Universe extends JPanel
 {	private 		final Cell  	outermostCell;
 	private static	final Universe 	theInstance = new Universe();
-
 	/** The default height and width of a Neighborhood in cells.
 	 *  If it's too big, you'll run too slowly because
 	 *  you have to update the entire block as a unit, so there's more
@@ -177,10 +178,9 @@ public class Universe extends JPanel
 			MenuSite.addLine(this,"Go","Slow",		 		modifier);
 			MenuSite.addLine(this,"Go","Medium",	 	 	modifier);
 			MenuSite.addLine(this,"Go","Fast",				modifier);
-		
-		
+			Clock.instance().changeDistributor("ListenerTick");
 	}
-	
+
 	
 
 	/** Singleton Accessor. The Universe object itself is manufactured
