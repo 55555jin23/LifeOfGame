@@ -1,21 +1,23 @@
 package com.holub.life;
 
-import java.io.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-import java.awt.*;
-import javax.swing.*;
-import java.awt.event.*;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
-import com.holub.io.Files;
+import com.holub.life.create.ActionCreate;
+import com.holub.life.create.Create;
 import com.holub.ui.MenuSite;
-
-import com.holub.life.Cell;
-import com.holub.life.Storable;
-import com.holub.life.Clock.Listener;
-import com.holub.tools.Publisher;
-import com.holub.life.Clock;
-import com.holub.life.Neighborhood;
-import com.holub.life.Resident;
 
 /**
  * The Universe is a mediator that sits between the Swing
@@ -45,6 +47,7 @@ public class Universe extends JPanel
 	 */
 	private static final int  DEFAULT_CELL_SIZE = 8;
 
+	private Create actionCreate;
 	// The constructor is private so that the universe can be created
 	// only by an outer-class method [Neighborhood.createUniverse()].
 
@@ -91,6 +94,8 @@ public class Universe extends JPanel
 		setMaximumSize	( PREFERRED_SIZE );
 		setMinimumSize	( PREFERRED_SIZE );
 		setOpaque		( true			 );
+		
+		actionCreate=new ActionCreate();
 
 		addMouseListener					//{=Universe.mouse}
 		(	new MouseAdapter()
@@ -105,39 +110,41 @@ public class Universe extends JPanel
 		);
 
 		MenuSite.addLine( this, "Grid", "Clear",
-			new ActionListener()
+			/*new ActionListener()
 			{	public void actionPerformed(ActionEvent e)
 				{	outermostCell.clear();
 					repaint();
 				}
-			}
+			}*/
+				(ActionListener)actionCreate.create(outermostCell, "Clear")
 		);
-
-		MenuSite.addLine			// {=Universe.load.setup}
+				MenuSite.addLine			// {=Universe.load.setup}
 		(	this, "Grid", "Load",
-			new ActionListener()
+			/*new ActionListener()
 			{	public void actionPerformed(ActionEvent e)
 				{	doLoad();
 				}
-			}
+			}*/
+				(ActionListener)actionCreate.create(outermostCell, "Load")
 		);
-
 		MenuSite.addLine
 		(	this, "Grid", "Store",
-			new ActionListener()
+			/*new ActionListener()
 			{	public void actionPerformed(ActionEvent e)
 				{	doStore();
 				}
-			}
+			}*/
+				(ActionListener)actionCreate.create(outermostCell, "Store")
 		);
 
 		MenuSite.addLine
 		(	this, "Grid", "Exit",
-			new ActionListener()
+			/*new ActionListener()
 			{	public void actionPerformed(ActionEvent e)
 		        {	System.exit(0);
 		        }
-			}
+			}*/
+				(ActionListener)actionCreate.create(outermostCell, "Exit")
 		);
 
 		Clock.instance().addClockListener //{=Universe.clock.subscribe}
@@ -155,8 +162,9 @@ public class Universe extends JPanel
 			}
 		);
 		
-		ActionListener modifier =									//{=startSetup}
-				new ActionListener()
+		ActionListener modifier =(ActionListener)actionCreate.create(outermostCell, "Modifier");
+				//{=startSetup}
+				/*new ActionListener()
 				{	public void actionPerformed(ActionEvent e)
 					{
 						String name = ((JMenuItem)e.getSource()).getName();
@@ -170,7 +178,7 @@ public class Universe extends JPanel
 											toDo=='M' ? 70 :	  // medium
 											toDo=='F' ? 30 : 0 ); // fast
 					}
-				};
+				};*/
 																		// {=midSetup}
 			MenuSite.addLine(this,"Go","Halt",  			modifier);
 			MenuSite.addLine(this,"Go","Tick (Single Step)",modifier);
@@ -191,7 +199,7 @@ public class Universe extends JPanel
 	{	return theInstance;
 	}
 
-	private void doLoad()
+	/*private void doLoad()
 	{	try
 		{
 			FileInputStream in = new FileInputStream(
@@ -231,7 +239,7 @@ public class Universe extends JPanel
 		{	JOptionPane.showMessageDialog( null, "Write Failed!",
 					"The Game of Life", JOptionPane.ERROR_MESSAGE);
 		}
-	}
+	}*/
 
 	/** Override paint to ask the outermost Neighborhood
 	 *  (and any subcells) to draw themselves recursively.
