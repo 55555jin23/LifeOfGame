@@ -30,6 +30,7 @@ import com.holub.ui.MenuSite;
  * @include /etc/license.txt
  */
 
+
 public class Universe extends JPanel
 {	
 	private 		final Cell  	outermostCell;

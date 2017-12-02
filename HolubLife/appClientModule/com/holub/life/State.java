@@ -4,4 +4,5 @@ public interface State {
 	
 	public boolean getState();
 
+	
 }

@@ -7,6 +7,7 @@ import java.io.*;
  * @include /etc/license.txt
  */
 
+
 public interface Storable
 {	void load ( InputStream in   ) throws IOException;
 	void flush( OutputStream out ) throws IOException;

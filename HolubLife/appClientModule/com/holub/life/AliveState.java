@@ -7,6 +7,7 @@ public class AliveState implements State{
 		this.contextCell = contextCell;
 	}
 	
+	
 	@Override
 	public boolean getState() {
 	return true;

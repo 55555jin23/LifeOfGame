@@ -23,6 +23,7 @@ package com.holub.life;
  * @include /etc/license.txt
  */
 
+
 public class Direction
 {	private int	map = BITS_NONE;
 

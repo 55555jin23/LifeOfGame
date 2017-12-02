@@ -10,6 +10,7 @@ public class WillBeDead implements State {
 	@Override
 	public boolean getState() {
 	return false;
+	
 	}
 
 }

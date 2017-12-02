@@ -35,6 +35,7 @@ import com.holub.life.Storable;
 
 public final class Neighborhood implements Cell
 {
+	
 	/** Block if reading is not permitted because the grid is
 	 *  transitioning to the next state. Only one lock is
 	 *  used (for the outermost neighborhood) since all updates

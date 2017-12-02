@@ -15,6 +15,7 @@ import com.holub.tools.Publisher.Distributor;
  * and sends notifications off to any observers every time the
  * clock "ticks."
  *
+ *
  * <h2>Revisions</h2>
  * <p>
  * 12-8-2004	AIH	Added a kludge to the clock-tick handler that

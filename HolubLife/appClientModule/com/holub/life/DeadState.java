@@ -7,6 +7,7 @@ public class DeadState implements State {
 		this.contextCell = contextCell;
 	}
 
+	
 	@Override
 	public boolean getState() {
 	return false;
