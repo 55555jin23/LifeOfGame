@@ -112,40 +112,20 @@ public class Universe extends JPanel
 		);
 
 		MenuSite.addLine( this, "Grid", "Clear",
-			/*new ActionListener()
-			{	public void actionPerformed(ActionEvent e)
-				{	outermostCell.clear();
-					repaint();
-				}
-			}*/
+	
 				(ActionListener)actionCreate.create(outermostCell, "Clear")
 		);
 				MenuSite.addLine			// {=Universe.load.setup}
 		(	this, "Grid", "Load",
-			/*new ActionListener()
-			{	public void actionPerformed(ActionEvent e)
-				{	doLoad();
-				}
-			}*/
 				(ActionListener)actionCreate.create(outermostCell, "Load")
 		);
 		MenuSite.addLine
 		(	this, "Grid", "Store",
-			/*new ActionListener()
-			{	public void actionPerformed(ActionEvent e)
-				{	doStore();
-				}
-			}*/
 				(ActionListener)actionCreate.create(outermostCell, "Store")
 		);
 
 		MenuSite.addLine
 		(	this, "Grid", "Exit",
-			/*new ActionListener()
-			{	public void actionPerformed(ActionEvent e)
-		        {	System.exit(0);
-		        }
-			}*/
 				(ActionListener)actionCreate.create(outermostCell, "Exit")
 		);
 
@@ -165,23 +145,7 @@ public class Universe extends JPanel
 		);
 		
 		ActionListener modifier =(ActionListener)actionCreate.create(outermostCell, "Modifier");
-				//{=startSetup}
-				/*new ActionListener()
-				{	public void actionPerformed(ActionEvent e)
-					{
-						String name = ((JMenuItem)e.getSource()).getName();
-						char toDo = name.charAt(0);
-
-						if( toDo=='T' )
-							Clock.instance().tick();				      // single tick
-						else
-							Clock.instance().startTicking(   toDo=='A' ? 500:	  // agonizing
-											toDo=='S' ? 150:	  // slow
-											toDo=='M' ? 70 :	  // medium
-											toDo=='F' ? 30 : 0 ); // fast
-					}
-				};*/
-																		// {=midSetup}
+		// {=midSetup}
 			MenuSite.addLine(this,"Go","Halt",  			modifier);
 			MenuSite.addLine(this,"Go","Tick (Single Step)",modifier);
 			MenuSite.addLine(this,"Go","Agonizing",	 	  	modifier);
@@ -200,48 +164,6 @@ public class Universe extends JPanel
 	public static Universe instance()
 	{	return theInstance;
 	}
-
-	/*private void doLoad()
-	{	try
-		{
-			FileInputStream in = new FileInputStream(
-			   Files.userSelected(".",".life","Life File","Load"));
-
-			Clock.instance().stop();		// stop the game and
-			outermostCell.clear();			// clear the board.
-
-			Storable memento = outermostCell.createMemento();
-			memento.load( in );
-			outermostCell.transfer( memento, new Point(0,0), Cell.LOAD );
-
-			in.close();
-		}
-		catch( IOException theException )
-		{	JOptionPane.showMessageDialog( null, "Read Failed!",
-					"The Game of Life", JOptionPane.ERROR_MESSAGE);
-		}
-		repaint();
-	}
-
-	private void doStore()
-	{	try
-		{
-			FileOutputStream out = new FileOutputStream(
-				  Files.userSelected(".",".life","Life File","Write"));
-
-			Clock.instance().stop();		// stop the game
-
-			Storable memento = outermostCell.createMemento();
-			outermostCell.transfer( memento, new Point(0,0), Cell.STORE );
-			memento.flush(out);
-
-			out.close();
-		}
-		catch( IOException theException )
-		{	JOptionPane.showMessageDialog( null, "Write Failed!",
-					"The Game of Life", JOptionPane.ERROR_MESSAGE);
-		}
-	}*/
 
 	/** Override paint to ask the outermost Neighborhood
 	 *  (and any subcells) to draw themselves recursively.

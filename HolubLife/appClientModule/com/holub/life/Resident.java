@@ -45,6 +45,7 @@ public final class Resident implements Cell
 		willBeState = WillBeDead;
 	}
 	
+	
 	public void setState(State state) {
 		this.state = state;
 	}
@@ -54,10 +55,7 @@ public final class Resident implements Cell
 	}
 
 	private boolean isStable(){
-		
 		return state.getState() == willBeState.getState();
-	//	return state.getState() == willBeAlive;
-	//	return amAlive == willBeAlive; 
 		}
 
 	/** figure the next state.
@@ -90,9 +88,6 @@ public final class Resident implements Cell
 		if( southeast.isAlive()) ++neighbors;
 		if( southwest.isAlive()) ++neighbors;
 
-	//	willBeAlive = (neighbors==3 || (amAlive && neighbors==2));
-	//	willBeAlive = (neighbors==3 || (state.getState() && neighbors==2));
-	//	willBeAlive = (neighbors==3 || (state.getState() && neighbors==2));
 		if( (neighbors==3 || (state.getState() && neighbors==2)) == true ) setWillBeState(WillBeAlive);
 		else setWillBeState(WillBeDead);
 		
@@ -120,21 +115,13 @@ public final class Resident implements Cell
 	
 	if(willBeState.getState() == true) setState(AliveState);
 	else if(willBeState.getState() == false) setState(DeadState);
-//		if(willBeAlive == true) setState(AliveState);
-//		else if(willBeAlive == false) setState(DeadState);
-	//	amAlive = willBeAlive;
 		return changed;
 	}
 
 	public void redraw(Graphics g, Rectangle here, boolean drawAll)
     {   g = g.create();
-	//	g.setColor(amAlive ? LIVE_COLOR : DEAD_COLOR );
     		g.setColor(state.getState() ? LIVE_COLOR : DEAD_COLOR );
 		g.fillRect(here.x+1, here.y+1, here.width-1, here.height-1);
-
-		// Doesn't draw a line on the far right and bottom of the
-		// grid, but that's life, so to speak. It's not worth the
-		// code for the special case.
 
 		g.setColor( BORDER_COLOR );
 		g.drawLine( here.x, here.y, here.x, here.y + here.height );
@@ -143,19 +130,17 @@ public final class Resident implements Cell
 	}
 
 	public void userClicked(Point here, Rectangle surface)
-	{	//amAlive = !amAlive;
+	{	
 		if(state.getState() == true) setState(DeadState);
 		else if(state.getState() == false) setState(AliveState);
 	}
 
 	public void	   clear()			{
 		setWillBeState(WillBeDead);
-		//willBeAlive=false;
 		setState(DeadState); 
 		}
 	public boolean isAlive()		{
 		return state.getState();
-		//return amAlive;			   
 		}
 	public Cell    create()			{return new Resident();			}
 	public int 	   widthInCells()	{return 1;}
@@ -169,10 +154,6 @@ public final class Resident implements Cell
 		Memento memento = (Memento)blob;
 		if( doLoad )
 		{	
-			//boolean temp = willBeAlive = memento.isAlive(upperLeft);
-			//if(temp) setState(AliveState);
-			//else setState(DeadState);
-			
 			if(   memento.isAlive(upperLeft)  ) {
 				setWillBeState(WillBeAlive);
 				setState(AliveState);
@@ -182,14 +163,11 @@ public final class Resident implements Cell
 				setWillBeState(WillBeDead);
 			} 
 			
-			
-			
-			
-			//if( amAlive = willBeAlive = memento.isAlive(upperLeft) )
+
 			if(state.getState())
 				return true;
 		}
-		//else if( amAlive )  					// store only live cells
+		 					// store only live cells
 		else if(state.getState())	
 		memento.markAsAlive( upperLeft );
 
