@@ -45,6 +45,7 @@ public final class Resident implements Cell
 		willBeState = WillBeDead;
 	}
 	
+	
 	public void setState(State state) {
 		this.state = state;
 	}
