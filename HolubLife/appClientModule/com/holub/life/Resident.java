@@ -23,10 +23,40 @@ public final class Resident implements Cell
 	private static final Color LIVE_COLOR 	= Color.RED;
 	private static final Color DEAD_COLOR   = Colors.LIGHT_YELLOW;
 
-	private boolean amAlive 	= false;
-	private boolean willBeAlive	= false;
+	//private boolean amAlive 	= false;
+	//private boolean willBeAlive	= false;
+	
+	State AliveState;
+	State DeadState;
+	State WillBeAlive;
+	State WillBeDead;
+	State state;
+	State willBeState;
+	
+	
+	public Resident () {
+		AliveState = new AliveState(this);
+		DeadState = new DeadState(this);
+		WillBeAlive = new WillBeAlive(this);
+		WillBeDead = new WillBeDead(this);
+		state= DeadState;
+		willBeState = WillBeDead;
+	}
+	
+	public void setState(State state) {
+		this.state = state;
+	}
+	
+	public void setWillBeState(State willBeState) {
+		this.willBeState = willBeState;
+	}
 
-	private boolean isStable(){return amAlive == willBeAlive; }
+	private boolean isStable(){
+		
+		return state.getState() == willBeState.getState();
+	//	return state.getState() == willBeAlive;
+	//	return amAlive == willBeAlive; 
+		}
 
 	/** figure the next state.
 	 *  @return true if the cell is not stable (will change state on the
@@ -58,7 +88,12 @@ public final class Resident implements Cell
 		if( southeast.isAlive()) ++neighbors;
 		if( southwest.isAlive()) ++neighbors;
 
-		willBeAlive = (neighbors==3 || (amAlive && neighbors==2));
+	//	willBeAlive = (neighbors==3 || (amAlive && neighbors==2));
+	//	willBeAlive = (neighbors==3 || (state.getState() && neighbors==2));
+	//	willBeAlive = (neighbors==3 || (state.getState() && neighbors==2));
+		if( (neighbors==3 || (state.getState() && neighbors==2)) == true ) setWillBeState(WillBeAlive);
+		else setWillBeState(WillBeDead);
+		
 		return !isStable();
 	}
 
@@ -79,13 +114,20 @@ public final class Resident implements Cell
 
 	public boolean transition()
 	{	boolean changed = isStable();
-		amAlive = willBeAlive;
+	
+	
+	if(willBeState.getState() == true) setState(AliveState);
+	else if(willBeState.getState() == false) setState(DeadState);
+//		if(willBeAlive == true) setState(AliveState);
+//		else if(willBeAlive == false) setState(DeadState);
+	//	amAlive = willBeAlive;
 		return changed;
 	}
 
 	public void redraw(Graphics g, Rectangle here, boolean drawAll)
     {   g = g.create();
-		g.setColor(amAlive ? LIVE_COLOR : DEAD_COLOR );
+	//	g.setColor(amAlive ? LIVE_COLOR : DEAD_COLOR );
+    		g.setColor(state.getState() ? LIVE_COLOR : DEAD_COLOR );
 		g.fillRect(here.x+1, here.y+1, here.width-1, here.height-1);
 
 		// Doesn't draw a line on the far right and bottom of the
@@ -99,11 +141,20 @@ public final class Resident implements Cell
 	}
 
 	public void userClicked(Point here, Rectangle surface)
-	{	amAlive = !amAlive;
+	{	//amAlive = !amAlive;
+		if(state.getState() == true) setState(DeadState);
+		else if(state.getState() == false) setState(AliveState);
 	}
 
-	public void	   clear()			{amAlive = willBeAlive = false; }
-	public boolean isAlive()		{return amAlive;			    }
+	public void	   clear()			{
+		setWillBeState(WillBeDead);
+		//willBeAlive=false;
+		setState(DeadState); 
+		}
+	public boolean isAlive()		{
+		return state.getState();
+		//return amAlive;			   
+		}
 	public Cell    create()			{return new Resident();			}
 	public int 	   widthInCells()	{return 1;}
 
@@ -115,11 +166,31 @@ public final class Resident implements Cell
 	{
 		Memento memento = (Memento)blob;
 		if( doLoad )
-		{	if( amAlive = willBeAlive = memento.isAlive(upperLeft) )
+		{	
+			
+			//boolean temp = willBeAlive = memento.isAlive(upperLeft);
+			//if(temp) setState(AliveState);
+			//else setState(DeadState);
+			
+			if(   memento.isAlive(upperLeft)  ) {
+				setWillBeState(WillBeAlive);
+				setState(AliveState);
+			} 
+			else {
+				setState(DeadState);
+				setWillBeState(WillBeDead);
+			} 
+			
+			
+			
+			
+			//if( amAlive = willBeAlive = memento.isAlive(upperLeft) )
+			if(state.getState())
 				return true;
 		}
-		else if( amAlive )  					// store only live cells
-			memento.markAsAlive( upperLeft );
+		//else if( amAlive )  					// store only live cells
+		else if(state.getState())	
+		memento.markAsAlive( upperLeft );
 
 		return false;
 	}

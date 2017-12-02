@@ -47,7 +47,12 @@ public final class Neighborhood implements Cell
 	 *  changed state during the last transition.
 	 */
 
-	private boolean amActive = false;
+//	private boolean amActive = false;
+	State AliveState;
+	State DeadState;
+	State state;
+	
+	
 
 	/** The actual grid of Cells contained within this neighborhood. */
 	private final Cell[][] grid;
@@ -64,6 +69,10 @@ public final class Neighborhood implements Cell
 
 	public Neighborhood(int gridSize, Cell prototype)
 	{
+		AliveState = new AliveState(this);
+		DeadState = new DeadState(this);
+		state= DeadState;
+		
 		this.gridSize = gridSize;
  		this.grid = new Cell[gridSize][gridSize];
 
@@ -79,6 +88,10 @@ public final class Neighborhood implements Cell
 	 *  as the "prototype" argument.
 	 */
 
+	public void setState(State state) {
+		this.state = state;
+	}
+	
 	public Cell create()
 	{	return new Neighborhood(gridSize, grid[0][0]);
 	}
@@ -130,7 +143,8 @@ public final class Neighborhood implements Cell
 		// Is some ajacent neigborhood active on the edge
 		// that ajoins me?
 
-		if(		amActive
+		if(	state.getState()
+	//  if( amActive
 			||	north	 .isDisruptiveTo().the( Direction.SOUTH 	  )
 			||	south	 .isDisruptiveTo().the( Direction.NORTH 	  )
 			||	east	 .isDisruptiveTo().the( Direction.WEST  	  )
@@ -237,11 +251,14 @@ public final class Neighborhood implements Cell
 			}
 		}
 
-		if( amActive && nothingHappened )
+		if( state.getState() && nothingHappened )
 			oneLastRefreshRequired = true;
 
-		amActive = !nothingHappened;
-		return amActive;
+		if(nothingHappened == true) setState(DeadState);
+		else if(nothingHappened == false) setState(AliveState);
+		//amActive = !nothingHappened;
+		//return amActive;
+		return state.getState();
 	}
 
 
@@ -343,7 +360,9 @@ public final class Neighborhood implements Cell
 		// need to update will actually do so.
 
 			
-		if( !amActive && !oneLastRefreshRequired && !drawAll )
+		if( !(state.getState()) && !oneLastRefreshRequired && !drawAll )
+//		if( !(state.getState())amActive && !oneLastRefreshRequired && !drawAll )
+
 			return;
 		try
 		{
@@ -374,7 +393,8 @@ public final class Neighborhood implements Cell
 			g.setColor( Colors.LIGHT_ORANGE );
 			g.drawRect( here.x, here.y, here.width, here.height );
 
-			if( amActive )
+	//		if(amActive)
+			if( state.getState() )
 			{	g.setColor( Color.BLUE );
 				g.drawRect(	here.x+1,	  here.y+1,
 							here.width-2, here.height-2 );
@@ -415,7 +435,8 @@ public final class Neighborhood implements Cell
 												  pixelsPerCell );
 
 		grid[row][column].userClicked(position, subcell); //{=Neighborhood.userClicked.call}
-		amActive = true;
+		setState(AliveState);
+		//amActive = true;
 		rememberThatCellAtEdgeChangedState(row, column);
 	}
 
@@ -434,7 +455,8 @@ public final class Neighborhood implements Cell
 			for( int column = 0; column < gridSize; ++column )
 				grid[row][column].clear();
 
-		amActive = false;
+		setState(DeadState);
+		//amActive = false;
 	}
 
 	/** Cause subcells to add an annotation to the indicated
@@ -450,8 +472,10 @@ public final class Neighborhood implements Cell
 		for( int row = 0; row < gridSize; ++row )
 		{   for( int column = 0; column < gridSize; ++column )
 			{	if(grid[row][column].transfer(memento,upperLeft,load))
-					amActive = true;
-
+					//amActive = true;
+					setState(AliveState);
+				
+				
 				Direction d =
 						grid[row][column].isDisruptiveTo();
 
@@ -462,7 +486,8 @@ public final class Neighborhood implements Cell
 			}
 			upperLeft.translate(-myWidth, subcellWidth );
 		}
-		return amActive;
+		return state.getState();
+		//return amActive;
 	}
 
 	public Storable createMemento()
