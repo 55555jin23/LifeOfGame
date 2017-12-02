@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.Timer;		// overrides java.awt.timer
 import com.holub.ui.MenuSite;
 import com.holub.tools.Publisher;
+import com.holub.tools.Publisher.Distributor;
 
 /***
  * The <code>Clock</code> class handles the timing of gameboard
@@ -35,6 +36,19 @@ public class Clock
 	// are established.
 	//
 
+	private Distributor distributor;
+	
+	public void changeDistributor(String message){
+		if(message=="ListenerTick"){
+			this.distributor=new Publisher.Distributor()
+			{	public void deliverTo( Object subscriber )
+				{	if( !menuIsActive() )
+					((Listener)subscriber).tick();
+				}
+			};
+		}
+	}
+	
 	private static Clock instance;
 
 	/** The clock is a singleton. Get a reference to it by calling
@@ -107,14 +121,7 @@ public class Clock
 	 *  stopped. (Life uses this for single stepping.)
 	 */
 	public void tick()
-	{	publisher.publish
-		(	new Publisher.Distributor()
-			{	public void deliverTo( Object subscriber )
-				{	if( !menuIsActive() )
-						((Listener)subscriber).tick();
-				}
-			}
-		);
+	{	publisher.publish(distributor);
 	}
 
 	/** Check if any item on the menu bar has been selected.
