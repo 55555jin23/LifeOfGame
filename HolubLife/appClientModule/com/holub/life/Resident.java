@@ -167,7 +167,6 @@ public final class Resident implements Cell
 		Memento memento = (Memento)blob;
 		if( doLoad )
 		{	
-			
 			//boolean temp = willBeAlive = memento.isAlive(upperLeft);
 			//if(temp) setState(AliveState);
 			//else setState(DeadState);

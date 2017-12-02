@@ -11,6 +11,5 @@ public class AliveState implements State{
 	public boolean getState() {
 	return true;
 	}
-	
 
 }

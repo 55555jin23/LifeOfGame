@@ -6,7 +6,6 @@ public class WillBeAlive implements State {
 	public WillBeAlive(Cell contextCell) {
 		this.contextCell = contextCell;
 	}
-	
 	@Override
 	public boolean getState() {
 	return true;

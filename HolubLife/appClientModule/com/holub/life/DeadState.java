@@ -12,6 +12,4 @@ public class DeadState implements State {
 	public boolean getState() {
 	return false;
 	}
-
-	
 }
