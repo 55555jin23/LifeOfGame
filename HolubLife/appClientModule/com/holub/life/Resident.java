@@ -30,6 +30,7 @@ public final class Resident implements Cell
 	State DeadState;
 	State WillBeAlive;
 	State WillBeDead;
+	
 	State state;
 	State willBeState;
 	
@@ -37,8 +38,9 @@ public final class Resident implements Cell
 	public Resident () {
 		AliveState = new AliveState(this);
 		DeadState = new DeadState(this);
-		WillBeAlive = new WillBeAlive(this);
-		WillBeDead = new WillBeDead(this);
+		WillBeAlive = new AliveState(this);
+		WillBeDead = new DeadState(this);
+		
 		state= DeadState;
 		willBeState = WillBeDead;
 	}
