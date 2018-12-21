@@ -3,7 +3,7 @@ Version 1.02
 Released 16 Jul., 2005
 
 
-version		description
+version		description..
 
 1.01		Alexey Marinichev: Fixed the "stuck glider" problem in
 			Neighborhood.java.
